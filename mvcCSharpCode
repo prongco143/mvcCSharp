@@ -1,0 +1,116 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MVCcSHARP
+{
+
+    /// CONTROLLER
+  
+    class LaptopController
+    {
+        private iObject iModel;
+        private iLaptopView iView;
+
+        public LaptopController(iObject i, iLaptopView iViews)
+        {
+            this.iModel = i;
+            this.iView = iViews;
+        }
+
+        public void DisplayLaptopInfo()
+        {
+            iView.DisplayLaptopView(this.iModel);
+        }
+
+        public void UpdatePrice(Decimal price)
+        {
+            this.iModel.Price = price;
+        }
+    }
+  
+    /// VIEW
+    
+    interface iLaptopView
+    {
+        void DisplayLaptopView(iObject i);
+    }
+    
+    class LaptopView : iLaptopView
+    {
+        public void DisplayLaptopView(iObject i)
+        {
+            Console.WriteLine("LAPTOP Info");
+            Console.WriteLine("*******************************");
+            Console.WriteLine("Brand     - {0}", i.Brand);
+            Console.WriteLine("Model     - {0}", i.Model);
+            Console.WriteLine("Color     - {0}", i.Color);
+            Console.WriteLine("Price     - {0}", i.Price.ToString());
+        }
+    }
+   
+    /// MODEL
+  
+    interface iObject
+    {
+        string Brand { get; set; }
+        string Model { get; set; }
+        string Color { get; set; }
+        decimal Price { get; set; }
+    }
+
+    class Laptop : iObject
+    {
+        string _brand;
+        string _model;
+        string _color;
+        Decimal _price;
+
+        public String Brand
+        {
+            get { return _brand; }
+            set { _brand = value; }
+        }
+
+        public String Model
+        {
+            get { return _model; }
+            set { _model = value; }
+        }
+
+        public String Color
+        {
+            get { return _color; }
+            set { _color = value; }
+        }
+
+        public decimal Price
+        {
+            get { return _price; }
+            set { _price = value; }
+        }
+    }
+
+    /// MAIN METHOD
+    
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            iObject iModel = new Laptop();
+            iLaptopView iView = new LaptopView();
+
+            iModel.Brand = "ACER";
+            iModel.Model = "N19H2";
+            iModel.Color = "Black";
+            iModel.Price = 29000.00M;
+
+            LaptopController IController = new LaptopController(iModel, iView);
+            IController.DisplayLaptopInfo();
+
+            Console.ReadLine();
+        }
+    }
+}
